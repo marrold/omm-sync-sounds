@@ -3,7 +3,7 @@
 language in voices.json, holding the defaults and just that language's entry.
 
 A Docker stage copies only its own file, so editing one language's voice
-doesn't invalidate the others' cached sounds (editing the defaults does).
+doesn't invalidate the others' cached sounds (editing the defaults or the per-set overrides does).
 """
 import json
 import os
@@ -13,4 +13,4 @@ voices = json.load(open(sys.argv[1]))
 os.makedirs(sys.argv[2], exist_ok=True)
 for language, settings in voices["languages"].items():
     with open(os.path.join(sys.argv[2], language + ".json"), "w") as f:
-        json.dump({"defaults": voices["defaults"], "languages": {language: settings}}, f, indent=2, sort_keys=True)
+        json.dump({"defaults": voices["defaults"], "sets": voices.get("sets", {}), "languages": {language: settings}}, f, indent=2, sort_keys=True)

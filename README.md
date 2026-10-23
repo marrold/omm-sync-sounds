@@ -29,6 +29,11 @@ directory; a filename may carry a path (`omm-sync/ring`). Several sets share a
 language's directory, so give your own set a prefix (`clock-en_GB.csv`) and
 keep its filenames under their own directory.
 
+The `clock` set (`clock-<language>.csv`) is for
+[asterisk-ws-clock](../asterisk-ws-clock): the pieces its synthetic voices string together
+into "at the third stroke, the time will be…", with no lead-in silence
+(`sets` in `voices.json`) because the clock places each to the sample.
+
 `voices.json` says which engine, voice and settings each language uses
 (`kokoro` or `piper`; a Kokoro voice may name its own `model` and
 `voices_file`, as German does for the fine-tuned Martin model). A language

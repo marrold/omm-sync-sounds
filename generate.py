@@ -37,7 +37,18 @@ class Voice:
         settings = {**voices["defaults"], **voices["languages"][language]}
         self.name = settings["voice"]
         self.lead_in_ms = int(settings["lead_in_ms"])
+        # A set may override some settings (voices.json "sets"): the clock's
+        # clips are placed to the sample, so they get no lead-in.
+        self.set_overrides = voices.get("sets", {})
         self._model = None
+
+    def lead_in_for(self, set_name):
+        return int(self.set_overrides.get(set_name, {}).get("lead_in_ms", self.lead_in_ms))
+
+    def config_hash_for(self, set_name):
+        if self.lead_in_for(set_name) == self.lead_in_ms:
+            return self.config_hash
+        return hashlib.sha256(f"{self.config_hash}:{self.lead_in_for(set_name)}".encode()).hexdigest()[:16]
 
     def _hash(self, params):
         # Hash of all parameters that affect audio output — changes trigger regeneration.
@@ -183,7 +194,9 @@ def process_group(set_name, language, entries, args, voice):
     os.makedirs(out_dir, exist_ok=True)
 
     manifest = load_manifest(out_dir, set_name)
-    config_changed = manifest.get("_config_hash") != voice.config_hash
+    config_hash = voice.config_hash_for(set_name)
+    lead_in_ms = voice.lead_in_for(set_name)
+    config_changed = manifest.get("_config_hash") != config_hash
 
     print(f"[{language}/{set_name}] {len(entries)} entries ({voice.name})", end="")
     if config_changed and not args.regenerate_all:
@@ -209,16 +222,16 @@ def process_group(set_name, language, entries, args, voice):
         try:
             os.makedirs(os.path.join(out_dir, os.path.dirname(filename)), exist_ok=True)
             src_wav = voice.synthesize(text)
-            convert(src_wav, wav_path, ["-acodec", "pcm_s16le"], voice.lead_in_ms)
-            convert(src_wav, alaw_path, ["-acodec", "pcm_alaw", "-f", "alaw"], voice.lead_in_ms)
-            convert(src_wav, gsm_path, ["-acodec", "libgsm"], voice.lead_in_ms)
+            convert(src_wav, wav_path, ["-acodec", "pcm_s16le"], lead_in_ms)
+            convert(src_wav, alaw_path, ["-acodec", "pcm_alaw", "-f", "alaw"], lead_in_ms)
+            convert(src_wav, gsm_path, ["-acodec", "libgsm"], lead_in_ms)
             manifest[filename] = text_hash
             generated += 1
         except Exception as exc:
             print(f"  ERROR {filename}: {exc}", file=sys.stderr)
             failed += 1
 
-    manifest["_config_hash"] = voice.config_hash
+    manifest["_config_hash"] = config_hash
     save_manifest(out_dir, set_name, manifest)
     print(f"  {generated} generated, {skipped} skipped, {failed} failed\n")
     return generated, skipped, failed

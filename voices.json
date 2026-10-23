@@ -6,6 +6,9 @@
     "speed": 0.9,
     "lead_in_ms": 150
   },
+  "sets": {
+    "clock": {"lead_in_ms": 0}
+  },
   "languages": {
     "en_GB": {"engine": "kokoro", "voice": "bf_isabella", "lang": "en-gb"},
     "fr":    {"engine": "kokoro", "voice": "ff_siwis", "lang": "fr-fr"},
