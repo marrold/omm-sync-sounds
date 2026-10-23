@@ -17,6 +17,7 @@ import io
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import wave
@@ -28,6 +29,16 @@ MODELS_DIR = os.environ.get("MODELS_DIR", "/models")
 VOICES_FILE = os.environ.get("VOICES_FILE", "/app/voices.json")
 FALLBACK_LANGUAGE = "en_GB"
 CSV_NAME = re.compile(r"^(?P<set>.+)-(?P<language>[a-z]{2,3}(?:_[A-Z]{2})?)$")
+MANIFEST_SCHEMA_VERSION = 2
+
+
+def generator_fingerprint():
+    """Identify all generator/parser behaviour that can affect an output file."""
+    with open(__file__, "rb") as source:
+        return hashlib.sha256(source.read()).hexdigest()[:16]
+
+
+GENERATOR_FINGERPRINT = generator_fingerprint()
 
 
 class Voice:
@@ -53,7 +64,8 @@ class Voice:
     def _hash(self, params):
         # Hash of all parameters that affect audio output — changes trigger regeneration.
         params = {**params, "engine": self.engine, "voice": self.name,
-                  "lead_in_ms": self.lead_in_ms, "target_rate": TARGET_RATE}
+                  "lead_in_ms": self.lead_in_ms, "target_rate": TARGET_RATE,
+                  "generator": GENERATOR_FINGERPRINT}
         return hashlib.sha256(json.dumps(params, sort_keys=True).encode()).hexdigest()[:16]
 
 
@@ -164,9 +176,20 @@ def manifest_path(output_dir, set_name):
 def load_manifest(output_dir, set_name):
     try:
         with open(manifest_path(output_dir, set_name)) as f:
-            return json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        return {}
+            manifest = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError, OSError):
+        return None
+
+    if not isinstance(manifest, dict):
+        return None
+    entries = manifest.get("entries")
+    if (manifest.get("_schema_version") != MANIFEST_SCHEMA_VERSION
+            or not isinstance(manifest.get("_config_hash"), str)
+            or not isinstance(entries, dict)
+            or not all(isinstance(name, str) and isinstance(value, str)
+                       for name, value in entries.items())):
+        return None
+    return manifest
 
 
 def save_manifest(output_dir, set_name, manifest):
@@ -193,14 +216,22 @@ def process_group(set_name, language, entries, args, voice):
     out_dir = os.path.join(args.output, language)
     os.makedirs(out_dir, exist_ok=True)
 
-    manifest = load_manifest(out_dir, set_name)
+    cache_root = args.cache or args.output
+    cache_dir = os.path.join(cache_root, language)
+    manifest = load_manifest(cache_dir, set_name)
+    cached_entries = manifest["entries"] if manifest else {}
     config_hash = voice.config_hash_for(set_name)
     lead_in_ms = voice.lead_in_for(set_name)
-    config_changed = manifest.get("_config_hash") != config_hash
+    config_changed = not manifest or manifest["_config_hash"] != config_hash
+    new_manifest = {
+        "_schema_version": MANIFEST_SCHEMA_VERSION,
+        "_config_hash": config_hash,
+        "entries": {},
+    }
 
     print(f"[{language}/{set_name}] {len(entries)} entries ({voice.name})", end="")
     if config_changed and not args.regenerate_all:
-        print(" (config changed — regenerating all)", end="")
+        print(" (cache missing or incompatible — regenerating all)", end="")
     print()
 
     generated = skipped = failed = 0
@@ -209,12 +240,22 @@ def process_group(set_name, language, entries, args, voice):
         wav_path = os.path.join(out_dir, filename + ".wav")
         alaw_path = os.path.join(out_dir, filename + ".alaw")
         gsm_path = os.path.join(out_dir, filename + ".gsm")
+        cached_paths = [
+            os.path.join(cache_dir, filename + ".wav"),
+            os.path.join(cache_dir, filename + ".alaw"),
+            os.path.join(cache_dir, filename + ".gsm"),
+        ]
 
         text_hash = hashlib.sha256(text.encode()).hexdigest()[:16]
-        files_exist = os.path.isfile(wav_path) and os.path.isfile(alaw_path) and os.path.isfile(gsm_path)
-        up_to_date = files_exist and not config_changed and manifest.get(filename) == text_hash
+        files_exist = all(os.path.isfile(path) for path in cached_paths)
+        up_to_date = files_exist and not config_changed and cached_entries.get(filename) == text_hash
 
         if not args.regenerate_all and up_to_date:
+            if os.path.abspath(cache_dir) != os.path.abspath(out_dir):
+                os.makedirs(os.path.join(out_dir, os.path.dirname(filename)), exist_ok=True)
+                for source, destination in zip(cached_paths, [wav_path, alaw_path, gsm_path]):
+                    shutil.copy2(source, destination)
+            new_manifest["entries"][filename] = text_hash
             skipped += 1
             continue
 
@@ -225,14 +266,25 @@ def process_group(set_name, language, entries, args, voice):
             convert(src_wav, wav_path, ["-acodec", "pcm_s16le"], lead_in_ms)
             convert(src_wav, alaw_path, ["-acodec", "pcm_alaw", "-f", "alaw"], lead_in_ms)
             convert(src_wav, gsm_path, ["-acodec", "libgsm"], lead_in_ms)
-            manifest[filename] = text_hash
+            new_manifest["entries"][filename] = text_hash
             generated += 1
         except Exception as exc:
             print(f"  ERROR {filename}: {exc}", file=sys.stderr)
             failed += 1
 
-    manifest["_config_hash"] = config_hash
-    save_manifest(out_dir, set_name, manifest)
+    # When updating an output directory in place, remove files formerly owned
+    # by this set. Docker builds use a separate cache directory and naturally
+    # omit deleted entries from their fresh /out directory.
+    if os.path.abspath(cache_dir) == os.path.abspath(out_dir):
+        current_names = {filename for filename, _ in entries}
+        for filename in set(cached_entries) - current_names:
+            for extension in (".wav", ".alaw", ".gsm"):
+                try:
+                    os.remove(os.path.join(out_dir, filename + extension))
+                except FileNotFoundError:
+                    pass
+
+    save_manifest(out_dir, set_name, new_manifest)
     print(f"  {generated} generated, {skipped} skipped, {failed} failed\n")
     return generated, skipped, failed
 
@@ -265,6 +317,10 @@ def main():
         "--output",
         default=os.environ.get("OUTPUT_DIR", "/sounds"),
         help="Root output directory (one subdirectory per language)",
+    )
+    parser.add_argument(
+        "--cache",
+        help="Previous output tree to reuse; incompatible caches are ignored",
     )
     parser.add_argument(
         "--voices",

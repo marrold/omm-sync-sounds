@@ -1,0 +1,8 @@
+filename,text
+# Prompts for omm-sync-demo-provider, the fake provider (ITSP) used to test the SIP federation
+demo-provider/enrolled,"Thank you. Your handset is now enrolled with the demo provider."
+demo-provider/enrol-refused,"Sorry. We don't recognise that enrolment code."
+demo-provider/enrol-failed,"Sorry. The enrolment could not be completed. Please try again."
+demo-provider/outbound,"This is the demo provider. Your call has been received."
+demo-provider/inbound,"This is the demo provider calling your handset."
+demo-provider/your-number,"Your number with the demo provider is"

@@ -31,6 +31,18 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Find previous sounds image
+        id: sound-cache
+        shell: bash
+        run: |
+          if docker buildx imagetools inspect "${IMAGE_NAME}:latest" >/dev/null 2>&1; then
+            echo "image=${IMAGE_NAME}:latest" >> "$GITHUB_OUTPUT"
+            echo "Seeding unchanged sounds from ${IMAGE_NAME}:latest"
+          else
+            echo "image=empty-sound-cache" >> "$GITHUB_OUTPUT"
+            echo "No previous image found; performing a clean build"
+          fi
+
       - id: meta
         uses: docker/metadata-action@v5
         with:
@@ -50,6 +62,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            SOUND_CACHE_IMAGE=${{ steps.sound-cache.outputs.image }}
           # mode=max keeps the sound-generation stage too, so the voices are
           # only downloaded and the sounds only generated when they change.
           cache-from: type=gha

@@ -42,10 +42,13 @@ language.
 
 ## Building
 
-Each language is its own Docker stage, cached and built in parallel, so a
-change to one language's csv or its entry in `voices.json` only regenerates
-that language; the defaults in `voices.json` or `generate.py` regenerate
-everything. To listen to them:
+Each language is its own Docker stage, cached and built in parallel. CI also
+uses the last `latest` image as an incremental source: versioned manifests let
+`generate.py` copy unchanged clips and synthesize only entries whose text or
+effective settings changed. Deleted entries disappear because every build
+writes a fresh output tree. A missing, corrupt or incompatible manifest is a
+cache miss, so manifest, CSV-parser or generator changes safely regenerate the
+affected set. To listen to them with a clean local build:
 
 ```bash
 docker build --target sounds --output output .
@@ -53,7 +56,8 @@ docker build --target sounds --output output .
 
 To add a language: add its engine and voice to `voices.json`, add its csvs, a
 `sound-<language>` stage in the `Dockerfile` (`FROM kokoro` or `FROM piper`,
-to match the engine) and a `COPY --from=` for it in the last stage.
+to match the engine), a cache copy from `previous-sounds`, and a `COPY --from=`
+for it in the last stage.
 
 ## Licence
 
