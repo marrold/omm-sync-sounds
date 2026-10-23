@@ -1,0 +1,11 @@
+filename,text
+omm-sync/login-code-intro,"Ihr O.M.M. Sync Anmeldecode lautet"
+omm-sync/login-code-repeat,"Drücken Sie die 1, um ihn noch einmal zu hören."
+omm-sync/try-again,"Entschuldigung, es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+omm-sync/web-login-signed-in,"Sie haben sich auf der O.M.M. Sync Website angemeldet. Wenn Sie das nicht waren, melden Sie andere Sitzungen auf Ihrer Kontoseite ab."
+omm-sync/web-login-linked,"Ihr Mobilteil wurde mit einem neuen O.M.M. Sync Konto verknüpft. Wenn Sie das nicht waren, melden Sie andere Sitzungen auf Ihrer Kontoseite ab."
+omm-sync/web-login-expired,"Dieser Code ist abgelaufen. Bitte versuchen Sie es erneut."
+omm-sync/ring,"Hier ist O.M.M. Sync. Sie haben dieses Mobilteil über die Website angerufen."
+omm-sync/enter-pin,"Bitte geben Sie Ihre PIN ein und drücken Sie dann die Raute-Taste."
+omm-sync/pin-wrong,"Entschuldigung, diese PIN ist falsch."
+omm-sync/pin-locked,"Zu viele falsche PINs. Bitte versuchen Sie es in einigen Minuten erneut."

@@ -1,0 +1,11 @@
+filename,text
+omm-sync/login-code-intro,"Su código de acceso de O.M.M. Sync es"
+omm-sync/login-code-repeat,"Pulse 1 para escucharlo de nuevo."
+omm-sync/try-again,"Lo sentimos, algo ha salido mal. Inténtelo de nuevo."
+omm-sync/web-login-signed-in,"Ha iniciado sesión en el sitio web de O.M.M. Sync. Si no ha sido usted, cierre las demás sesiones desde la página de su cuenta."
+omm-sync/web-login-linked,"Su terminal se ha vinculado a una nueva cuenta de O.M.M. Sync. Si no ha sido usted, cierre las demás sesiones desde la página de su cuenta."
+omm-sync/web-login-expired,"Este código ha caducado. Inténtelo de nuevo."
+omm-sync/ring,"Soy O.M.M. Sync. Ha llamado a este terminal desde el sitio web."
+omm-sync/enter-pin,"Introduzca su PIN y pulse la tecla almohadilla."
+omm-sync/pin-wrong,"Lo sentimos, ese PIN es incorrecto."
+omm-sync/pin-locked,"Demasiados PIN incorrectos. Inténtelo de nuevo dentro de unos minutos."

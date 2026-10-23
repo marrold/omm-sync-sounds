@@ -1,0 +1,11 @@
+filename,text
+omm-sync/login-code-intro,"Uw O.M.M. Sync inlogcode is"
+omm-sync/login-code-repeat,"Druk op 1 om de code opnieuw te horen."
+omm-sync/try-again,"Sorry, er is iets misgegaan. Probeer het opnieuw."
+omm-sync/web-login-signed-in,"U bent ingelogd op de O.M.M. Sync website. Was u dit niet, log dan andere sessies uit via uw accountpagina."
+omm-sync/web-login-linked,"Uw toestel is gekoppeld aan een nieuw O.M.M. Sync account. Was u dit niet, log dan andere sessies uit via uw accountpagina."
+omm-sync/web-login-expired,"Deze code is verlopen. Probeer het opnieuw."
+omm-sync/ring,"Dit is O.M.M. Sync. U heeft dit toestel gebeld vanaf de website."
+omm-sync/enter-pin,"Voer uw pincode in en druk daarna op hekje."
+omm-sync/pin-wrong,"Sorry, die pincode is onjuist."
+omm-sync/pin-locked,"Te veel onjuiste pincodes. Probeer het over enkele minuten opnieuw."

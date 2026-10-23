@@ -1,0 +1,11 @@
+filename,text
+omm-sync/login-code-intro,"Votre code de connexion O.M.M. Sync est"
+omm-sync/login-code-repeat,"Tapez 1 pour l'entendre à nouveau."
+omm-sync/try-again,"Désolé, une erreur s'est produite. Veuillez réessayer."
+omm-sync/web-login-signed-in,"Vous êtes connecté au site web O.M.M. Sync. Si ce n'était pas vous, déconnectez les autres sessions depuis la page de votre compte."
+omm-sync/web-login-linked,"Votre combiné est associé à un nouveau compte O.M.M. Sync. Si ce n'était pas vous, déconnectez les autres sessions depuis la page de votre compte."
+omm-sync/web-login-expired,"Ce code a expiré. Veuillez réessayer."
+omm-sync/ring,"Ici O.M.M. Sync. Vous avez appelé ce combiné depuis le site web."
+omm-sync/enter-pin,"Veuillez saisir votre code PIN, puis appuyez sur dièse."
+omm-sync/pin-wrong,"Désolé, ce code PIN est incorrect."
+omm-sync/pin-locked,"Trop de codes PIN incorrects. Veuillez réessayer dans quelques minutes."

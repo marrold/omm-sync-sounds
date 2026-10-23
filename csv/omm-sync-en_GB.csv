@@ -1,0 +1,13 @@
+filename,text
+# Prompts for the omm-sync sign-in calls (names as in omm-sync's docs/PORTAL_PLAN.md,
+# "Prompts the media server needs"; try-again and ring are ours)
+omm-sync/login-code-intro,"Your O.M.M. sync sign in code is"
+omm-sync/login-code-repeat,"Press 1 to hear it again."
+omm-sync/try-again,"Sorry. Something went wrong. Please try again."
+omm-sync/web-login-signed-in,"You've signed in to the O.M.M. sync website. If that wasn't you, sign out other sessions from your account page."
+omm-sync/web-login-linked,"Your handset is linked to a new O.M.M. sync account. If that wasn't you, sign out other sessions from your account page."
+omm-sync/web-login-expired,"That code has expired. Please try again."
+omm-sync/ring,"This is O.M.M. sync. You rang this handset from the website."
+omm-sync/enter-pin,"Please enter your PIN, then press hash."
+omm-sync/pin-wrong,"Sorry, that PIN is wrong."
+omm-sync/pin-locked,"Too many wrong PINs. Please try again in a few minutes."

@@ -1,0 +1,108 @@
+name: omm-sync-sounds image
+
+on:
+  push:
+    branches: ['**']
+    tags: ['v*']
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+env:
+  IMAGE_NAME: ghcr.io/marrold/omm-sync-sounds
+  PACKAGE_NAME: omm-sync-sounds
+  PACKAGE_OWNER: marrold
+
+jobs:
+  build:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      # The default docker driver can't export a build cache.
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=ref,event=branch,enable={{is_not_default_branch}}
+            type=ref,event=tag
+            type=ref,event=pr,prefix=pr-
+            type=sha,prefix=sha-,format=short
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: sounds
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          # mode=max keeps the sound-generation stage too, so the voices are
+          # only downloaded and the sounds only generated when they change.
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # Keep only the 10 most recent commit-SHA-tagged images. Versions carrying
+  # another current tag, such as latest, remain among the newest versions.
+  prune-sha-tags:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - name: Delete old sha-* image versions beyond the 10 most recent
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          gh api --paginate \
+            "/users/${PACKAGE_OWNER}/packages/container/${PACKAGE_NAME}/versions" \
+            | jq -r '.[] | select(.metadata.container.tags[]? | startswith("sha-")) | [.created_at, .id] | @tsv' \
+            | sort -r \
+            | tail -n +11 \
+            | cut -f2 \
+            | while read -r id; do
+                echo "Deleting package version $id"
+                gh api -X DELETE \
+                  "/users/${PACKAGE_OWNER}/packages/container/${PACKAGE_NAME}/versions/${id}"
+              done
+
+  # Remove the pr-<number> image when its pull request is closed or merged.
+  delete-pr-image:
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - name: Delete pr-${{ github.event.pull_request.number }} image
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_TAG: pr-${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          version_id=$(gh api --paginate \
+            "/users/${PACKAGE_OWNER}/packages/container/${PACKAGE_NAME}/versions" \
+            | jq -r --arg tag "$PR_TAG" \
+              '.[] | select(.metadata.container.tags[]? == $tag) | .id' \
+            | head -n1)
+          if [ -n "$version_id" ]; then
+            echo "Deleting package version $version_id ($PR_TAG)"
+            gh api -X DELETE \
+              "/users/${PACKAGE_OWNER}/packages/container/${PACKAGE_NAME}/versions/${version_id}"
+          else
+            echo "No image found tagged $PR_TAG, nothing to delete"
+          fi
