@@ -18,3 +18,4 @@ omm-sync/roam-intro,"This is O.M.M. sync. Your handset is at a site you haven't 
 omm-sync/roam-allowed,"Thank you. Your handset can now be used here, until it moves to another site."
 omm-sync/roam-permanent,"Press 1 to also allow this site permanently. Otherwise, hang up."
 omm-sync/roam-permanent-done,"This site is now always allowed. You can remove it from your account page on the website."
+omm-sync/not-enrolled,"Sorry. This handset isn't set up with a SIP provider yet. To get started, dial the enrolment code your provider gave you. It begins with star 8."

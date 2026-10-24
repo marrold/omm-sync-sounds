@@ -16,3 +16,4 @@ omm-sync/roam-intro,"Dit is O.M.M. Sync. Uw toestel bevindt zich op een locatie 
 omm-sync/roam-allowed,"Dank u. Uw toestel kan hier nu worden gebruikt, tot het naar een andere locatie gaat."
 omm-sync/roam-permanent,"Druk op 1 om deze locatie ook permanent toe te staan. Anders kunt u ophangen."
 omm-sync/roam-permanent-done,"Deze locatie is nu altijd toegestaan. U kunt haar op uw accountpagina op de website weer verwijderen."
+omm-sync/not-enrolled,"Sorry, dit toestel is nog niet ingesteld bij een SIP-provider. Kies om te beginnen de aanmeldcode die u van uw provider hebt gekregen. Die begint met sterretje 8."

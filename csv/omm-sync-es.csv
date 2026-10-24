@@ -16,3 +16,4 @@ omm-sync/roam-intro,"Soy O.M.M. Sync. Su terminal está en un sitio en el que no
 omm-sync/roam-allowed,"Gracias. Su terminal ya puede usarse aquí, hasta que pase a otro sitio."
 omm-sync/roam-permanent,"Pulse 1 para permitir también este sitio de forma permanente. Si no, cuelgue."
 omm-sync/roam-permanent-done,"Este sitio queda permitido de forma permanente. Puede quitarlo desde la página de su cuenta en el sitio web."
+omm-sync/not-enrolled,"Lo sentimos, este terminal aún no está configurado con un proveedor SIP. Para empezar, marque el código de alta que le dio su proveedor. Empieza por asterisco 8."

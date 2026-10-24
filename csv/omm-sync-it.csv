@@ -16,3 +16,4 @@ omm-sync/roam-intro,"Qui O.M.M. Sync. Il tuo portatile si trova in una sede in c
 omm-sync/roam-allowed,"Grazie. Ora puoi usare il tuo portatile qui, finché non passa a un'altra sede."
 omm-sync/roam-permanent,"Premi 1 per consentire questa sede anche in modo permanente. Altrimenti, riaggancia."
 omm-sync/roam-permanent-done,"Questa sede è ora sempre consentita. Puoi rimuoverla dalla pagina del tuo account sul sito web."
+omm-sync/not-enrolled,"Spiacenti, questo portatile non è ancora configurato con un provider SIP. Per iniziare, componi il codice di registrazione che ti ha dato il tuo provider. Inizia con asterisco 8."

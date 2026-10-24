@@ -16,3 +16,4 @@ omm-sync/roam-intro,"Hier ist O.M.M. Sync. Ihr Mobilteil befindet sich an einem 
 omm-sync/roam-allowed,"Danke. Ihr Mobilteil kann hier jetzt benutzt werden, bis es an einen anderen Standort wechselt."
 omm-sync/roam-permanent,"Drücken Sie die 1, um diesen Standort auch dauerhaft zu erlauben. Andernfalls legen Sie auf."
 omm-sync/roam-permanent-done,"Dieser Standort ist jetzt dauerhaft erlaubt. Sie können ihn auf Ihrer Kontoseite auf der Website wieder entfernen."
+omm-sync/not-enrolled,"Entschuldigung, für dieses Mobilteil ist noch kein SIP-Anbieter eingerichtet. Wählen Sie zum Einrichten den Anmeldecode, den Ihnen Ihr Anbieter gegeben hat. Er beginnt mit Stern 8."
