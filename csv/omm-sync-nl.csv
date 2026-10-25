@@ -21,6 +21,7 @@ omm-sync/associate-more-after,"plaatsen vrij. Om nog een provider toe te voegen,
 omm-sync/associate-enter,"Voer de code in die u van uw provider hebt gekregen en druk dan op hekje."
 omm-sync/associate-unknown,"Sorry, die code is niet herkend. Probeer het opnieuw."
 omm-sync/associate-unavailable,"Sorry. Die provider is op dit moment niet beschikbaar."
+omm-sync/associate-rate-limited,"Sorry, er zijn te veel codes geprobeerd op deze handset. Wacht een paar minuten en probeer het dan opnieuw."
 omm-sync/associate-full,"Sorry. Alle providerplaatsen van dit toestel zijn in gebruik. Om nog een provider toe te voegen, maakt u een plaats vrij op de O.M.M. sync-website."
 omm-sync/provider-disabled,"Sorry. De provider voor deze lijn is tijdelijk uitgeschakeld."
 omm-sync/provider-unavailable,"Sorry. De provider voor deze lijn wordt niet meer ondersteund."

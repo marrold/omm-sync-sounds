@@ -21,6 +21,7 @@ omm-sync/associate-more-after,"Plätze frei. Um einen weiteren Anbieter hinzuzuf
 omm-sync/associate-enter,"Bitte geben Sie den Code ein, den Ihnen Ihr Anbieter gegeben hat, und drücken Sie dann die Raute-Taste."
 omm-sync/associate-unknown,"Entschuldigung, dieser Code wurde nicht erkannt. Bitte versuchen Sie es erneut."
 omm-sync/associate-unavailable,"Entschuldigung. Dieser Anbieter ist im Moment nicht verfügbar."
+omm-sync/associate-rate-limited,"Entschuldigung, auf diesem Mobilteil wurden zu viele Codes versucht. Bitte warten Sie einige Minuten und versuchen Sie es dann erneut."
 omm-sync/associate-full,"Entschuldigung. Alle Anbieterplätze dieses Mobilteils sind belegt. Um einen weiteren Anbieter hinzuzufügen, geben Sie auf der O.M.M. sync Website einen Platz frei."
 omm-sync/provider-disabled,"Entschuldigung. Der Anbieter für diese Leitung ist vorübergehend deaktiviert."
 omm-sync/provider-unavailable,"Entschuldigung. Der Anbieter für diese Leitung wird nicht mehr unterstützt."

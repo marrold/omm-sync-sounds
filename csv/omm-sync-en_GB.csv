@@ -23,6 +23,7 @@ omm-sync/associate-more-after,"slots remaining. To add another provider, press 1
 omm-sync/associate-enter,"Please enter the code your provider gave you, then press hash."
 omm-sync/associate-unknown,"Sorry, that code wasn't recognised. Please try again."
 omm-sync/associate-unavailable,"Sorry. That provider isn't available at the moment."
+omm-sync/associate-rate-limited,"Sorry, too many codes have been tried on this handset. Please wait a few minutes and try again."
 omm-sync/associate-full,"Sorry. All of this handset's provider slots are in use. To add another provider, release one on the O.M.M. sync website."
 omm-sync/provider-disabled,"Sorry. The provider for this line is temporarily disabled."
 omm-sync/provider-unavailable,"Sorry. The provider for this line is no longer supported."

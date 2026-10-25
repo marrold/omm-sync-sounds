@@ -21,6 +21,7 @@ omm-sync/associate-more-after,"ranuras libres. Para añadir otro proveedor, puls
 omm-sync/associate-enter,"Introduzca el código que le dio su proveedor y pulse almohadilla."
 omm-sync/associate-unknown,"Lo sentimos, no se reconoce ese código. Inténtelo de nuevo."
 omm-sync/associate-unavailable,"Lo sentimos. Ese proveedor no está disponible en este momento."
+omm-sync/associate-rate-limited,"Lo sentimos, se han probado demasiados códigos en este teléfono. Espere unos minutos e inténtelo de nuevo."
 omm-sync/associate-full,"Lo sentimos. Todas las ranuras de proveedor de este terminal están en uso. Para añadir otro proveedor, libere una en el sitio web de O.M.M. sync."
 omm-sync/provider-disabled,"Lo sentimos. El proveedor de esta línea está desactivado temporalmente."
 omm-sync/provider-unavailable,"Lo sentimos. El proveedor de esta línea ya no es compatible."

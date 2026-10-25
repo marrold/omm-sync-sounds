@@ -21,6 +21,7 @@ omm-sync/associate-more-after,"emplacements. Pour ajouter un autre opérateur, a
 omm-sync/associate-enter,"Veuillez saisir le code que votre opérateur vous a donné, puis appuyez sur dièse."
 omm-sync/associate-unknown,"Désolé, ce code n'a pas été reconnu. Veuillez réessayer."
 omm-sync/associate-unavailable,"Désolé. Cet opérateur n'est pas disponible pour le moment."
+omm-sync/associate-rate-limited,"Désolé, trop de codes ont été essayés sur ce combiné. Veuillez patienter quelques minutes, puis réessayer."
 omm-sync/associate-full,"Désolé. Tous les emplacements d'opérateur de ce combiné sont utilisés. Pour en ajouter un autre, libérez un emplacement sur le site O.M.M. sync."
 omm-sync/provider-disabled,"Désolé. L'opérateur de cette ligne est temporairement désactivé."
 omm-sync/provider-unavailable,"Désolé. L'opérateur de cette ligne n'est plus pris en charge."
